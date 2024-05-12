@@ -1,0 +1,137 @@
+<style>
+  body {
+    font-family: "Open Sans", sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+    color: #333;
+  }
+
+  .header {
+    background-color: #2C4E80;
+    color: white;
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .header h1 {
+    font-size: 1.5rem;
+    margin: 0;
+  }
+
+  .main-content {
+    padding: 1rem;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  form {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  form label {
+    flex: 1;
+    font-weight: bold;
+    margin-right: 1rem;
+  }
+
+  form input[type="text"] {
+    flex: 2;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  form input[type="submit"] {
+    background-color: #FFC55A;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-left: 10px;
+  }
+
+  .task-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .task-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    background-color: #fff;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+
+  .task-item a {
+    color: #333;
+    background-color: #ffc55aab;
+    text-decoration: none;
+    padding: 0.5rem;
+    border-radius: 4px;
+    margin: 5px;
+    transition: 0.3s;
+  }
+
+  .task-item a:hover {
+    background-color: #FFC55A;
+
+  }
+
+  .task-text {
+    flex: 1;
+    margin-left: 20px;
+  }
+
+  .task-text strike {
+    color: #ccc;
+  }
+</style>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To Do App</title>
+  </head>
+  <body>
+    <header class="header">
+      <h1>To Do App</h1>
+    </header>
+    <main class="main-content">
+      <form method="POST" action="/">
+        {% csrf_token %}
+        <label for="task-title">New Task:</label>
+        <input
+          type="text"
+          id="task-title"
+          name="title"
+          placeholder="Enter task title"
+        />
+        <input type="submit" name="createTask" value="Create Task" />
+      </form>
+      <ul class="task-list">
+        {% for task in tasks %}
+        <li class="task-item">
+          <a href="{% url 'update_task' task.id %}">Update</a>
+          <a href="{% url 'delete_task' task.id %}">Delete</a>
+          <span class="task-text">
+            {% if task.complete == True %}
+            <strike> {{ task.title }} </strike>
+            {% else %} {{ task.title }} {% endif %}
+          </span>
+        </li>
+        {% endfor %}
+      </ul>
+    </main>
+  </body>
+</html>
